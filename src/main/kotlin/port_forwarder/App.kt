@@ -1,3 +1,5 @@
+package port_forwarder
+
 import java.io.InputStream
 import java.io.OutputStream
 import java.lang.IllegalArgumentException
@@ -12,7 +14,7 @@ val SOCKET_TIMEOUT: Int = TimeUnit.MINUTES.toMillis(1).toInt()
 
 data class AddressAndPort(val host: String, val port: Int)
 
-class TransferDataFromTo(val sourceStream: InputStream, val destStream: OutputStream): Runnable {
+class TransferDataFromTo(private val sourceStream: InputStream, private val destStream: OutputStream): Runnable {
     override fun run() {
         while (true) {
             val buffer = ByteArray(20000)
@@ -28,7 +30,7 @@ class TransferDataFromTo(val sourceStream: InputStream, val destStream: OutputSt
 fun main(args: Array<String>) {
     if (args.size != 2) {
         println("Usage: <bind interface/port> <forward to ip/port>")
-        println("Example: docker_proxy_forwarder 10.0.75.0:3128 localhost:3128")
+        println("Example arguments: 10.0.75.0:3128 localhost:3128")
 
         exitProcess(1)
     }
